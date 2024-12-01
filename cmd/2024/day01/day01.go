@@ -3,6 +3,9 @@ package day01
 import (
 	"fmt"
 	"os"
+	"sort"
+	"strconv"
+	"strings"
 
 	"github.com/spf13/cobra"
 )
@@ -27,15 +30,64 @@ func execute(parent, command string) {
 }
 
 func puzzle(input string) int {
-	if input == "" {
-		return 0
+	var score int
+	leftList := []int{}
+	rightList := []int{}
+	for _, line := range strings.Split(input, "\r\n") {
+		numbers := strings.Fields(line)
+		populateSlice(numbers, &leftList, &rightList)
 	}
-	return 1
+	sort.Ints(leftList)
+	sort.Ints(rightList)
+	for i := 0; i < len(leftList); i++ {
+		score += abs(leftList[i] - rightList[i])
+	}
+	return score
 }
 
 func bonus(input string) int {
-	if input == "" {
-		return 0
+	var similarity int
+	leftList := []int{}
+	rightList := []int{}
+	for _, line := range strings.Split(input, "\r\n") {
+		numbers := strings.Fields(line)
+		populateSlice(numbers, &leftList, &rightList)
 	}
-	return 1
+	for _, lVal := range leftList {
+		acc := 0
+		for _, rVal := range rightList {
+			if rVal == lVal {
+				acc++
+			}
+		}
+		similarity += acc * lVal
+	}
+	return similarity
+}
+
+func abs(x int) int {
+	if x < 0 {
+		return -x
+	}
+	return x
+}
+
+func insert(slice *[]int, value string) []int {
+	convertedValue, err := strconv.Atoi(value)
+	if err != nil {
+		panic(fmt.Errorf("error converting %s to integer: %w", value, err))
+	}
+	return append(*slice, convertedValue)
+}
+
+func populateSlice(numbers []string, sliceEven, sliceOdd *[]int) {
+	count := 0
+	for _, val := range numbers {
+		if count%2 == 0 {
+			*sliceEven = insert(sliceEven, val)
+		} else {
+			*sliceOdd = insert(sliceOdd, val)
+		}
+		count++
+	}
 }
