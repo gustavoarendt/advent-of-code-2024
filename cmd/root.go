@@ -8,6 +8,7 @@ import (
 	"github.com/gustavoarendt/advent-of-code-2024/cmd/2024/day02"
 	"github.com/gustavoarendt/advent-of-code-2024/cmd/2024/day03"
 	"github.com/gustavoarendt/advent-of-code-2024/cmd/2024/day04"
+	"github.com/gustavoarendt/advent-of-code-2024/cmd/2024/day05"
 	"github.com/spf13/cobra"
 )
 
@@ -25,6 +26,7 @@ func init() {
 	Cmd.AddCommand(day02.Cmd)
 	Cmd.AddCommand(day03.Cmd)
 	Cmd.AddCommand(day04.Cmd)
+	Cmd.AddCommand(day05.Cmd)
 }
 
 func Execute() {
